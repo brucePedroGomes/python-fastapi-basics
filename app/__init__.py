@@ -1,0 +1,1 @@
+"""FastAPI basics example package."""
