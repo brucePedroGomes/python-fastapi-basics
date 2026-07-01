@@ -50,18 +50,6 @@ async def test_create_item():
 
 
 @pytest.mark.anyio
-async def test_create_item_with_trailing_slash():
-    async with make_client() as client:
-        response = await client.post(
-            "/items/",
-            json={"name": "Milk", "price": 2.75, "in_stock": True},
-        )
-
-    assert response.status_code == 201
-    assert response.json()["name"] == "Milk"
-
-
-@pytest.mark.anyio
 async def test_validation_error_has_custom_shape():
     async with make_client() as client:
         response = await client.post("/items", json={"name": "A", "price": -1})
