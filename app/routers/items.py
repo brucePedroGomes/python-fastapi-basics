@@ -21,6 +21,11 @@ async def list_items(api_version: ApiVersion) -> list[Item]:
     return items_db
 
 
+@router.get("/", response_model=list[Item], include_in_schema=False)
+async def list_items_with_slash(api_version: ApiVersion) -> list[Item]:
+    return await list_items(api_version)
+
+
 @router.get("/{item_id}", response_model=Item)
 async def get_item(item_id: int, api_version: ApiVersion) -> Item:
     for item in items_db:
@@ -38,3 +43,13 @@ async def create_item(item: ItemCreate, api_version: ApiVersion) -> Item:
     new_item = Item(id=len(items_db) + 1, **item.model_dump())
     items_db.append(new_item)
     return new_item
+
+
+@router.post(
+    "/",
+    response_model=Item,
+    status_code=status.HTTP_201_CREATED,
+    include_in_schema=False,
+)
+async def create_item_with_slash(item: ItemCreate, api_version: ApiVersion) -> Item:
+    return await create_item(item, api_version)
